@@ -15,9 +15,9 @@ import React, { Component } from 'react';
 import {
   View,
   Dimensions,
-  WebView,
   Platform,
 } from 'react-native';
+import { WebView } from 'react-native-webview';
 import PropTypes from "prop-types";
 
 const injectedScript = function() {
@@ -48,7 +48,7 @@ export default class MyWebView extends Component {
     onMessage: () => {}
   };
 
-  constructor (props: Object) {
+  constructor (props) {
     super(props);
     this.state = {
       webViewHeight: this.props.defaultHeight
@@ -76,9 +76,9 @@ export default class MyWebView extends Component {
   render () {
     const _w = this.props.width || Dimensions.get('window').width;
     const _h = this.props.autoHeight ? this.state.webViewHeight : this.props.defaultHeight;
-    const androidScript = 'window.postMessage = String(Object.hasOwnProperty).replace(\'hasOwnProperty\', \'postMessage\');' +
+    const androidScript = 'window.postMessage = window.ReactNativeWebView.postMessage;' +
     '(' + String(injectedScript) + ')();';
-    const iosScript = '(' + String(injectedScript) + ')();' + 'window.postMessage = String(Object.hasOwnProperty).replace(\'hasOwnProperty\', \'postMessage\');';
+    const iosScript = '(' + String(injectedScript) + ')();' + 'window.postMessage = window.ReactNativeWebView.postMessage;';
     return (
       <WebView
         ref={(ref) => { this.webview = ref; }}
